@@ -1,0 +1,25 @@
+{
+  "name": "wechat_girlfriend",
+  "version": "1.0.0",
+  "description": "use wechaty to create a wechat bot",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BlackStar0313/wechat_girlfriend.git"
+  },
+  "keywords": [
+    "wechat_girlfriend"
+  ],
+  "author": "liu",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/BlackStar0313/wechat_girlfriend/issues"
+  },
+  "homepage": "https://github.com/BlackStar0313/wechat_girlfriend#readme",
+  "dependencies": {
+    "wechaty": "^0.56.6"
+  }
+}
