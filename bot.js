@@ -1,6 +1,7 @@
 
 console.log("hello")
 const { Wechaty, FileBox, UrlLink } = require('wechaty') // import { Wechaty } from 'wechaty'
+const weather = require('./src/weather')
 
 Wechaty.instance() // Global Instance
     .on('scan', (qrcode, status) => console.log(`Scan QR Code to login: ${status}\nhttps://wechaty.js.org/qrcode/${encodeURIComponent(qrcode)}`))
@@ -42,8 +43,15 @@ Wechaty.instance() // Global Instance
             const room = m.room();
             if (room) {
                 room.say('晚安哦~ 宝贝~')
+                const text = await weather()
+                contact2.say(text);
             }
             contact2.say('晚安哦~ 宝贝~')
+            const text = await weather()
+            contact2.say(text);
+        }
+        else if (/早安/g.test(m.text())) {
+            contact2.say('早上好~')
         }
         else if (/最帅的人/g.test(m.text())) {
             const contactCard = await bot.Contact.find({ name: '0313' }) // change 'lijiarui' to any of the room member
@@ -57,24 +65,35 @@ Wechaty.instance() // Global Instance
     })
     .start();
 
+const BadmintonType = {
+    BeforeRemind: "beforeRemind",
+    BeforeGameRemind: "beforeGameRemind",
+    BeforeGame: "beforeGame",
+    AfterGame: "afterGame"
+}
+
 async function badminton(bot) {
     const room = await bot.Room.find({ topic: '你好世界' })
     console.log(`badminton: ${room}`)
-    startBadmintonRemindLoop(room, 1, 19, 0, "明天晚上有球儿哦~");
-    startBadmintonRemindLoop(room, 2, 18, 0, "一会儿就要开始了哦，记得买点晚饭吃先，别饿肚子哈~ \n祝大家玩儿的开心~ (*^▽^*)");
-    startBadmintonRemindLoop(room, 2, 19, 30, "准备准备该出发了哦");
-    startBadmintonRemindLoop(room, 2, 22, 15, "嘻嘻~ 大家运动完好好休息哈~  下周继续~~ (づ￣ 3￣)づ")
+    startBadmintonRemindLoop(BadmintonType.BeforeRemind, room, 1, 19, 0, "明天晚上有球儿哦~");
+    startBadmintonRemindLoop(BadmintonType.BeforeGameRemind, room, 2, 18, 0, "一会儿就要开始了哦，记得买点晚饭吃先，别饿肚子哈~ \n祝大家玩儿的开心~ (*^▽^*)");
+    startBadmintonRemindLoop(BadmintonType.BeforeGame, room, 2, 19, 30, "准备准备该出发了哦");
+    startBadmintonRemindLoop(BadmintonType.AfterGame, room, 2, 22, 15, "嘻嘻~ 大家运动完好好休息哈~  下周继续~~ (づ￣ 3￣)づ")
 
-    // startBadmintonRemindLoop(room, 4, 19, 11, "明天晚上有球儿哦~");
-    // startBadmintonRemindLoop(room, 4, 19, 12, "一会儿就要开始了哦，记得买点晚饭吃先，别饿肚子哈~ \n祝大家玩儿的开心~ (*^▽^*)");
-    // startBadmintonRemindLoop(room, 4, 19, 13, "准备准备该出发了哦");
-    // startBadmintonRemindLoop(room, 4, 19, 14, "嘻嘻~ 大家运动完好好休息哈~  下周继续~~ (づ￣ 3￣)づ")
+    // startBadmintonRemindLoop(BadmintonType.BeforeRemind, room, 0, 0, 25, "明天晚上有球儿哦~");
+    // startBadmintonRemindLoop(BadmintonType.BeforeGameRemind, room, 0, 0, 26, "一会儿就要开始了哦，记得买点晚饭吃先，别饿肚子哈~ \n祝大家玩儿的开心~ (*^▽^*)");
+    // startBadmintonRemindLoop(BadmintonType.BeforeGame, room, 0, 0, 27, "准备准备该出发了哦");
+    // startBadmintonRemindLoop(BadmintonType.AfterGame, room, 0, 0, 28, "嘻嘻~ 大家运动完好好休息哈~  下周继续~~ (づ￣ 3￣)づ")
 }
 
-function startBadmintonRemindLoop(con, day, hour, min, str) {
+function startBadmintonRemindLoop(type, con, day, hour, min, str) {
     let nextRemindTime = getNextTime(day, hour, min);
-    setTimeout(() => {
+    setTimeout(async () => {
         con.say(str);
+        if (type == BadmintonType.BeforeRemind) {
+            const text = await weather()
+            con.say(text);
+        }
         startBadmintonRemindLoop(con, day, hour, min, str);
     }, nextRemindTime);
 }
