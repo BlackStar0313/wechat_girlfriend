@@ -44,7 +44,7 @@ Wechaty.instance() // Global Instance
             if (room) {
                 room.say('晚安哦~ 宝贝~')
                 const text = await weather()
-                contact2.say(text);
+                room.say(text);
             }
             contact2.say('晚安哦~ 宝贝~')
             const text = await weather()
@@ -52,6 +52,12 @@ Wechaty.instance() // Global Instance
         }
         else if (/早安/g.test(m.text())) {
             contact2.say('早上好~')
+        }
+        else if (/懒/g.test(m.text())) {
+            const room = m.room();
+            if (room) {
+                await room.say("懒人会得脂肪肝")
+            }
         }
         else if (/最帅的人/g.test(m.text())) {
             const contactCard = await bot.Contact.find({ name: '0313' }) // change 'lijiarui' to any of the room member
@@ -73,7 +79,8 @@ const BadmintonType = {
 }
 
 async function badminton(bot) {
-    const room = await bot.Room.find({ topic: '你好世界' })
+    // const room = await bot.Room.find({ topic: '你好世界' })
+    const room = await bot.Room.find({ topic: '周三晚上羽毛球' })
     console.log(`badminton: ${room}`)
     startBadmintonRemindLoop(BadmintonType.BeforeRemind, room, 1, 19, 0, "明天晚上有球儿哦~");
     startBadmintonRemindLoop(BadmintonType.BeforeGameRemind, room, 2, 18, 0, "一会儿就要开始了哦，记得买点晚饭吃先，别饿肚子哈~ \n祝大家玩儿的开心~ (*^▽^*)");
