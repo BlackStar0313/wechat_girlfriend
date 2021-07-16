@@ -24,21 +24,21 @@ async function badminton(bot) {
     // startBadmintonRemindLoop(BadmintonType.BeforeGame, room, 1, 19, 30, "准备准备该出发了哦");
     // startBadmintonRemindLoop(BadmintonType.AfterGame, room, 1, 22, 15, "嘻嘻~ 大家运动完好好休息哈~  下周继续~~ (づ￣ 3￣)づ")
 
-    startBadmintonRemindLoop(BadmintonType.BeforeRemind, room, 4, 21, 35, "明天晚上有球儿哦~");
-    // startBadmintonRemindLoop(BadmintonType.BeforeGameRemind, room, 4, 21, 19, "一会儿就要开始了哦，记得买点晚饭吃先，别饿肚子哈~ \n祝大家玩儿的开心~ (*^▽^*)");
-    // startBadmintonRemindLoop(BadmintonType.BeforeGame, room, 4, 21, 20, "准备准备该出发了哦");
-    // startBadmintonRemindLoop(BadmintonType.AfterGame, room, 4, 21, 21, "嘻嘻~ 大家运动完好好休息哈~  下周继续~~ (づ￣ 3￣)づ")
+    startBadmintonRemindLoop(BadmintonType.BeforeRemind, room, 4, 21, 43, "明天晚上有球儿哦~");
+    startBadmintonRemindLoop(BadmintonType.BeforeGameRemind, room, 4, 21, 44, "一会儿就要开始了哦，记得买点晚饭吃先，别饿肚子哈~ \n祝大家玩儿的开心~ (*^▽^*)");
+    startBadmintonRemindLoop(BadmintonType.BeforeGame, room, 4, 21, 45, "准备准备该出发了哦");
+    startBadmintonRemindLoop(BadmintonType.AfterGame, room, 4, 21, 46, "嘻嘻~ 大家运动完好好休息哈~  下周继续~~ (づ￣ 3￣)づ")
 }
 
 function startBadmintonRemindLoop(type, con, day, hour, min, str) {
     let nextRemindTime = getNextTime(day, hour, min);
     setTimeout(async () => {
-        // con.say(str);
-        // if (type == BadmintonType.BeforeRemind) {
-        //     const text = await weather()
-        //     con.say(text);
-        // }
-        startBadmintonRemindLoop(con, day, hour, min, str);
+        con.say(str);
+        if (type == BadmintonType.BeforeRemind) {
+            const text = await weather()
+            con.say(text);
+        }
+        startBadmintonRemindLoop(type, con, day, hour, min, str);
     }, nextRemindTime);
 }
 
@@ -50,7 +50,7 @@ function getNextTime(targetDay, targetHour, targetMin) {
 
 
     let remindTime = weekStartTime + targetDay * 3600 * 24 + targetHour * 3600 + targetMin * 60 + timeNow.getTimezoneOffset() * 60
-    console.log("【test 】", remindTime)
+    // console.log("【test 】", weekStartTime, " day ", targetDay * 3600 * 24, " hour  ", targetHour * 3600, " min ", targetMin * 60, " sec ", timeNow.getTimezoneOffset() * 60)
     let remindDate = new Date(remindTime * 1000);
     console.log(" time now  ", timeNow, " remind time is  ", remindDate);
     if (timeNow.getTime() < remindDate.getTime()) {
