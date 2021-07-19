@@ -16,18 +16,18 @@ const BadmintonType = {
 }
 
 async function badminton(bot) {
-    const room = await bot.Room.find({ topic: '你好世界' })
-    // const room = await bot.Room.find({ topic: '周三晚上羽毛球' })
+    // const room = await bot.Room.find({ topic: '你好世界' })
+    const room = await bot.Room.find({ topic: '周二羽毛球' })
     console.log(`badminton: ${room}`)
-    // startBadmintonRemindLoop(BadmintonType.BeforeRemind, room, 0, 18, 0, "明天晚上有球儿哦~");
-    // startBadmintonRemindLoop(BadmintonType.BeforeGameRemind, room, 1, 18, 0, "一会儿就要开始了哦，记得买点晚饭吃先，别饿肚子哈~ \n祝大家玩儿的开心~ (*^▽^*)");
-    // startBadmintonRemindLoop(BadmintonType.BeforeGame, room, 1, 19, 30, "准备准备该出发了哦");
-    // startBadmintonRemindLoop(BadmintonType.AfterGame, room, 1, 22, 15, "嘻嘻~ 大家运动完好好休息哈~  下周继续~~ (づ￣ 3￣)づ")
+    startBadmintonRemindLoop(BadmintonType.BeforeRemind, room, 0, 18, 0, "明天晚上有球儿哦~ 😁");
+    startBadmintonRemindLoop(BadmintonType.BeforeGameRemind, room, 1, 18, 0, "马上要开始了，记得买点晚饭吃先，别饿肚子~ \n大家玩儿的开心~ (*^▽^*)");
+    startBadmintonRemindLoop(BadmintonType.BeforeGame, room, 1, 19, 30, "准备准备该出发了哈😍");
+    startBadmintonRemindLoop(BadmintonType.AfterGame, room, 1, 22, 15, "大家玩儿完好好休息哈~🥰 \n 下周继续~~ (づ￣ 3￣)づ")
 
-    startBadmintonRemindLoop(BadmintonType.BeforeRemind, room, 4, 21, 43, "明天晚上有球儿哦~");
-    startBadmintonRemindLoop(BadmintonType.BeforeGameRemind, room, 4, 21, 44, "一会儿就要开始了哦，记得买点晚饭吃先，别饿肚子哈~ \n祝大家玩儿的开心~ (*^▽^*)");
-    startBadmintonRemindLoop(BadmintonType.BeforeGame, room, 4, 21, 45, "准备准备该出发了哦");
-    startBadmintonRemindLoop(BadmintonType.AfterGame, room, 4, 21, 46, "嘻嘻~ 大家运动完好好休息哈~  下周继续~~ (づ￣ 3￣)づ")
+    // startBadmintonRemindLoop(BadmintonType.BeforeRemind, room, 4, 21, 43, "明天晚上有球儿哦~");
+    // startBadmintonRemindLoop(BadmintonType.BeforeGameRemind, room, 4, 21, 44, "马上要开始了，记得买点晚饭吃先，别饿肚子~ \n大家玩儿的开心~ (*^▽^*)");
+    // startBadmintonRemindLoop(BadmintonType.BeforeGame, room, 4, 21, 45, "准备准备该出发了哈");
+    // startBadmintonRemindLoop(BadmintonType.AfterGame, room, 4, 21, 46, "大家玩儿完好好休息哈~ \n 下周继续~~ (づ￣ 3￣)づ")
 }
 
 function startBadmintonRemindLoop(type, con, day, hour, min, str) {
@@ -122,11 +122,30 @@ async function main() {
         }
         else if (/早安/g.test(m.text())) {
             contact2.say('早上好~')
+            const room = m.room();
+            if (room) {
+                await room.say("早上好~")
+            }
         }
         else if (/懒/g.test(m.text())) {
             const room = m.room();
             if (room) {
                 await room.say("这人会得脂肪肝")
+            }
+        }
+        else if (/@贴心小棉袄/g.test(m.text())) {
+            const room = m.room();
+            if (room) {
+                await room.say("还不能理解你说的😃 \n后续功能开发中...")
+            }
+            // contact2.say('后续功能开发中...')
+        }
+        else if (/明天天气/g.test(m.text())) {
+            // console.log(" contect ", m.contact)
+            const room = m.room();
+            if (room) {
+                const text = await weather()
+                await room.say(text)
             }
         }
         // else if (/哈哈/g.test(m.text())) {
@@ -143,7 +162,7 @@ async function main() {
         else if (/你是谁/g.test(m.text())) {
             const room = m.room();
             if (room) {
-                room.say("我是志伟哥哥的贴心小棉袄~");
+                room.say("我是志伟哥哥的贴心小棉袄🙈~");
             }
         }
     });
